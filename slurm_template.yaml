@@ -1,0 +1,95 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: 965a552b78b54814912f58ad13970b8d
+      name: Slurm
+  templates:
+    - uuid: 3afbc3fe8a8d4d499d9d02813ec05d4a
+      template: 'Template Slurm'
+      name: 'Template Slurm'
+      description: 'Discovers Slurm node information'
+      groups:
+        - name: Slurm
+      items:
+        - uuid: 8d1d522ce5e24e43864c4a333d364374
+          name: 'Slurm node state'
+          key: slurm.state
+          trends: '0'
+          value_type: CHAR
+          description: 'Slurm node state. See more: https://slurm.schedmd.com/sinfo.html#SECTION_NODE-STATE-CODES'
+          tags:
+            - tag: Application
+              value: Slurm
+          triggers:
+            - uuid: a97d7461047e4c819cdfe3496481b045
+              expression: 'last(/Template Slurm/slurm.state)="DOWN"'
+              name: 'Slurm node {HOST.NAME} is DOWN'
+              priority: HIGH
+              manual_close: 'YES'
+              tags:
+                - tag: Application
+                  value: Slurm
+            - uuid: f8683b8cdfce4684a3fb1d5da0f650df
+              expression: 'last(/Template Slurm/slurm.state)="DRAINED" or last(/Template Slurm/slurm.state)="DRAINING"'
+              name: 'Slurm node {HOST.NAME} is DRAIN'
+              priority: AVERAGE
+              tags:
+                - tag: Application
+                  value: Slurm
+            - uuid: 0a00c6f3ee894b339cb868d02ce31d45
+              expression: 'last(/Template Slurm/slurm.state)="FAIL" or last(/Template Slurm/slurm.state)="FAILING"'
+              name: 'Slurm node {HOST.NAME} is FAIL'
+              priority: HIGH
+              tags:
+                - tag: Application
+                  value: Slurm
+            - uuid: 79e7d68a60094362a84c9a67e67f6be5
+              expression: 'last(/Template Slurm/slurm.state)="INVAL"'
+              name: 'Slurm node {HOST.NAME} is INVAL'
+              priority: HIGH
+              tags:
+                - tag: Application
+                  value: Slurm
+            - uuid: f0f932404d744ccb8420ddbdd7f9ebe3
+              expression: 'last(/Template Slurm/slurm.state)="MAINT"'
+              name: 'Slurm node {HOST.NAME} is MAINT'
+              priority: INFO
+              tags:
+                - tag: Application
+                  value: Slurm
+            - uuid: 82d87136e8d04adda1dd3cbd8a0e4e91
+              expression: 'last(/Template Slurm/slurm.state)="POWER_DOWN" or last(/Template Slurm/slurm.state)="POWERED_DOWN"'
+              name: 'Slurm node {HOST.NAME} is POWERING DOWN'
+              priority: WARNING
+              tags:
+                - tag: Application
+                  value: Slurm
+            - uuid: 3b9124867dbb47d58c5abfcc3f666db0
+              expression: 'last(/Template Slurm/slurm.state)="POWERING_UP" or last(/Template Slurm/slurm.state)="UNKNOWN"'
+              name: 'Slurm node {HOST.NAME} is STARTING'
+              priority: INFO
+              tags:
+                - tag: Application
+                  value: Slurm
+        - uuid: aac6d97e655f456796ade7330eb7d53e
+          name: 'Slurm version'
+          key: slurm.version
+          delay: 5m
+          trends: '0'
+          value_type: CHAR
+          description: 'Node''s Slurm version'
+          tags:
+            - tag: Application
+              value: Slurm
+          triggers:
+            - uuid: 3d284550d640421c9df293df905e9611
+              expression: 'last(/Template Slurm/slurm.version,#1)<>last(/Template Slurm/slurm.version,#2) and length(last(/Template Slurm/slurm.version))>0'
+              name: 'Slurm version changed'
+              priority: INFO
+              manual_close: 'YES'
+              tags:
+                - tag: Application
+                  value: Slurm
+      tags:
+        - tag: Application
+          value: Slurm
