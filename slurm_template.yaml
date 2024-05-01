@@ -71,6 +71,10 @@ zabbix_export:
               tags:
                 - tag: Application
                   value: Slurm
+            - uuid: f315083102e8442a8f46745325d377fe
+              expression: 'find(/Template Slurm/slurm.state,,,"cannot access")=1 or find(/Template Slurm/slurm.state,,,"permission denied")=1 or find(/Template Slurm/slurm.state,,,"error")=1 or nodata(/Template Slurm/slurm.state,300)=1'
+              name: 'Slurm node {HOST.NAME} is unkown!'
+              priority: HIGH
         - uuid: aac6d97e655f456796ade7330eb7d53e
           name: 'Slurm version'
           key: slurm.version
@@ -90,6 +94,10 @@ zabbix_export:
               tags:
                 - tag: Application
                   value: Slurm
+            - uuid: 9982c50191d0452388dbea1a2e1492ff
+              expression: 'find(/Template Slurm/slurm.version,,,"cannot access")=1 or find(/Template Slurm/slurm.version,,,"permission denied")=1 or find(/Template Slurm/slurm.version,,,"error")=1 or nodata(/Template Slurm/slurm.version,300)=1'
+              name: 'Slurm version is unknown!'
+              priority: HIGH
       tags:
         - tag: Application
           value: Slurm
