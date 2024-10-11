@@ -73,7 +73,7 @@ zabbix_export:
                   value: Slurm
             - uuid: f315083102e8442a8f46745325d377fe
               expression: 'find(/Template Slurm/slurm.state,,,"cannot access")=1 or find(/Template Slurm/slurm.state,,,"permission denied")=1 or find(/Template Slurm/slurm.state,,,"error")=1 or nodata(/Template Slurm/slurm.state,900)=1'
-              name: 'Slurm node {HOST.NAME} state is unkown!'
+              name: 'Slurm node {HOST.NAME} state is unknown!'
               priority: HIGH
         - uuid: aac6d97e655f456796ade7330eb7d53e
           name: 'Slurm version'
